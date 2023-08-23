@@ -1,15 +1,8 @@
 # This file contains the functions for converting between Roman numerals and numbers.
 
 # The Roman numerals and their values
-ROMAN_NUMERALS = {
-    'I': 1,
-    'V': 5,
-    'X': 10,
-    'L': 50,
-    'C': 100,
-    'D': 500,
-    'M': 1000
-}
+ROMAN = ["I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"]
+NUMERALS = [1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000]
 
 
 def numeral_to_roman(numeral):
@@ -24,7 +17,23 @@ def numeral_to_roman(numeral):
     Raises:
     ValueError -- if the number is invalid
     """
-    return numeral
+
+    # Test for invalid arguments
+    if not isinstance(numeral, int):
+        raise ValueError("Invalid argument")
+
+    # Test for invalid numbers
+    if numeral < 1 or numeral > 3999:
+        raise ValueError("Invalid number")
+
+    # Convert the number to a Roman numeral
+    roman = ""
+    for i in range(len(NUMERALS) - 1, -1, -1):
+        while numeral >= NUMERALS[i]:
+            roman += ROMAN[i]
+            numeral -= NUMERALS[i]
+
+    return roman
 
 
 def roman_to_numeral(roman):
@@ -42,15 +51,15 @@ def roman_to_numeral(roman):
 
     # Test for invalid Roman numerals
     for char in roman:
-        if char not in ROMAN_NUMERALS:
+        if char not in ROMAN:
             raise ValueError("Invalid Roman numeral")
 
     # Convert the Roman numeral to a number
     numeral = 0
     for i in range(len(roman)):
-        if i > 0 and ROMAN_NUMERALS[roman[i]] > ROMAN_NUMERALS[roman[i - 1]]:
-            numeral += ROMAN_NUMERALS[roman[i]] - 2 * ROMAN_NUMERALS[roman[i - 1]]
+        if i > 0 and NUMERALS[ROMAN.index(roman[i])] > NUMERALS[ROMAN.index(roman[i - 1])]:
+            numeral += NUMERALS[ROMAN.index(roman[i])] - 2 * NUMERALS[ROMAN.index(roman[i - 1])]
         else:
-            numeral += ROMAN_NUMERALS[roman[i]]
+            numeral += NUMERALS[ROMAN.index(roman[i])]
 
     return numeral
